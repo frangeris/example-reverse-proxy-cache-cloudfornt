@@ -1,0 +1,23 @@
+{
+  "name": "example-reverse-proxy-cache-cloudfornt",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/frangeris/example-reverse-proxy-cache-cloudfornt.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/frangeris/example-reverse-proxy-cache-cloudfornt/issues"
+  },
+  "homepage": "https://github.com/frangeris/example-reverse-proxy-cache-cloudfornt#readme",
+  "dependencies": {
+    "@faker-js/faker": "7.6.0",
+    "serverless": "3.24.1"
+  }
+}

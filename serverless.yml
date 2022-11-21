@@ -1,0 +1,54 @@
+service: aws-node-http-api-project
+frameworkVersion: "3"
+
+provider:
+  name: aws
+  runtime: nodejs16.x
+
+functions:
+  hello:
+    handler: src/handler.hello
+    events:
+      - httpApi:
+          path: /
+          method: get
+
+resources:
+  Resources:
+    mycachepolicy:
+      Type: AWS::CloudFront::CachePolicy
+      Properties:
+        CachePolicyConfig:
+          Name: mycachepolicy
+          DefaultTTL: 86400
+          MaxTTL: 86400
+          MinTTL: 1
+          ParametersInCacheKeyAndForwardedToOrigin:
+            EnableAcceptEncodingGzip: true
+            EnableAcceptEncodingBrotli: true
+            CookiesConfig:
+              CookieBehavior: none
+            HeadersConfig:
+              HeaderBehavior: none
+            QueryStringsConfig:
+              QueryStringBehavior: none
+    mydistribution:
+      Type: AWS::CloudFront::Distribution
+      Properties:
+        DistributionConfig:
+          Enabled: true
+          Origins:
+            - DomainName:
+                !Select [1, !Split ["//", !GetAtt HttpApi.ApiEndpoint]]
+              Id: mydistributiondomainid
+              CustomOriginConfig:
+                OriginProtocolPolicy: https-only
+          DefaultCacheBehavior:
+            CachePolicyId: !Ref mycachepolicy
+            DefaultTTL: 300
+            TargetOriginId: mydistributiondomainid
+            ViewerProtocolPolicy: https-only
+            AllowedMethods:
+              - GET
+              - HEAD
+          PriceClass: PriceClass_All
